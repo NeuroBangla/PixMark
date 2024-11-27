@@ -58,14 +58,14 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
       </div>
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
         <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width="100%" height="100%">
-          {selectedResults.map((box, i) => (
+          {selectedResults.map(({boundingBox, color}, i) => (
             <rect
               key={i}
-              x={box.boundingBox.x0 * scale}
-              y={box.boundingBox.y0 * scale}
-              width={(box.boundingBox.x1 - box.boundingBox.x0) * scale}
-              height={(box.boundingBox.y1 - box.boundingBox.y0) * scale}
-              style={{ fill: "none", stroke: box.color || "lime", strokeWidth: 1 }}
+              x={boundingBox.x0 * scale}
+              y={boundingBox.y0 * scale}
+              width={(boundingBox.x1 - boundingBox.x0) * scale}
+              height={(boundingBox.y1 - boundingBox.y0) * scale}
+              style={{ fill: "none", stroke: color || "lime", strokeWidth: 1 }}
             />
           ))}
           {hoveringOverAnnotation && (
