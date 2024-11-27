@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "keywords": [
     "annotation",
@@ -26,10 +28,21 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.2",
+    "@storybook/addon-essentials": "^8.4.5",
+    "@storybook/addon-interactions": "^8.4.5",
+    "@storybook/addon-onboarding": "^8.4.5",
+    "@storybook/addon-webpack5-compiler-swc": "^1.0.5",
+    "@storybook/blocks": "^8.4.5",
+    "@storybook/react": "^8.4.5",
+    "@storybook/react-webpack5": "^8.4.5",
+    "@storybook/test": "^8.4.5",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "eslint": "^9.15.0",
+    "eslint-plugin-storybook": "^0.11.1",
     "prettier": "^3.4.1",
+    "storybook": "^8.4.5",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }
