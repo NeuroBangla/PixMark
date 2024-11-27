@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
+    "cosmos": "cosmos --expose-imports"
   },
   "keywords": [
     "annotation",
