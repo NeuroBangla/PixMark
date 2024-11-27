@@ -1,0 +1,22 @@
+{
+  "name": "pixmark",
+  "version": "0.0.1",
+  "description": "An annotation marking tool with React and TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "annotation",
+    "react",
+    "typescript",
+    "ts",
+    "annotate"
+  ],
+  "author": "Maifee Ul Asad <maifeeulasad@gmail.com>",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maifeeulasad/pixmark.git"
+  }
+}
