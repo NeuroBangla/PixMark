@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 
+type IHexColor = string;
+
 interface IAnnotation {
   text: string;
   boundingBox: {
@@ -8,6 +10,7 @@ interface IAnnotation {
     x1: number; // bottom right
     y1: number;
   };
+  color?: IHexColor;
 }
 
 interface IPixMarkViewer {
@@ -62,7 +65,7 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
               y={box.boundingBox.y0 * scale}
               width={(box.boundingBox.x1 - box.boundingBox.x0) * scale}
               height={(box.boundingBox.y1 - box.boundingBox.y0) * scale}
-              style={{ fill: "none", stroke: "lime", strokeWidth: 1 }}
+              style={{ fill: "none", stroke: box.color || "lime", strokeWidth: 1 }}
             />
           ))}
           {hoveringOverAnnotation && (
