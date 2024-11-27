@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 type IHexColor = string;
 
@@ -20,60 +20,62 @@ interface IPixMarkViewer {
 }
 
 const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [scale, setScale] = useState(1);
 
-  useEffect(() => {
-    if (!src || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const urlToBase64 = (url: string): Promise<string | ArrayBuffer | null> => {
+    return new Promise((resolve) => {
+      fetch(url).then((response) => {
+        response.blob().then((blob) => {
+          blobToBase64(blob).then((res) => {
+            resolve(res);
+          });
+        });
+      });
+    });
+  };
 
-    const imageObj = new Image();
-    imageObj.onload = () => {
-      const { width: imgWidth, height: imgHeight } = imageObj;
-      const { clientWidth: canvasWidth, clientHeight: canvasHeight } = canvas;
+  const blobToBase64 = (blob: Blob): Promise<string | ArrayBuffer | null> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
 
-      const imgRatio = imgWidth / imgHeight;
-      const canvasRatio = canvasWidth / canvasHeight;
-      const calculatedScale = imgRatio > canvasRatio
-        ? canvasWidth / imgWidth
-        : canvasHeight / imgHeight;
-
-      setScale(calculatedScale);
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(imageObj, 0, 0, imgWidth * calculatedScale, imgHeight * calculatedScale);
-    };
-
-    imageObj.src = src;
-  }, [src]);
 
   if (!src) return <div>Image Preview</div>;
 
+  const [imageBase64, setImageBase64] = useState<string>('');
+
+  useEffect(() => {
+    urlToBase64(src).then((res) => {
+      setImageBase64(res as string);
+    });
+  }, [src]);
+
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
-      <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-        <canvas ref={canvasRef} width={900} height={900} />
-      </div>
+      
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
         <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width="100%" height="100%">
-          {selectedResults.map(({boundingBox, color}, i) => (
+          <image href={imageBase64} x="0" y="0" width="900" height="900" />
+          {selectedResults.map((box, i) => (
             <rect
               key={i}
-              x={boundingBox.x0 * scale}
-              y={boundingBox.y0 * scale}
-              width={(boundingBox.x1 - boundingBox.x0) * scale}
-              height={(boundingBox.y1 - boundingBox.y0) * scale}
-              style={{ fill: "none", stroke: color || "lime", strokeWidth: 1 }}
+              x={box.boundingBox.x0}
+              y={box.boundingBox.y0}
+              width={box.boundingBox.x1 - box.boundingBox.x0}
+              height={box.boundingBox.y1 - box.boundingBox.y0}
+              style={{ fill: "none", stroke: box.color || "lime", strokeWidth: 1 }}
             />
           ))}
           {hoveringOverAnnotation && (
             <rect
-              x={hoveringOverAnnotation.boundingBox.x0 * scale}
-              y={hoveringOverAnnotation.boundingBox.y0 * scale}
-              width={(hoveringOverAnnotation.boundingBox.x1 - hoveringOverAnnotation.boundingBox.x0) * scale}
-              height={(hoveringOverAnnotation.boundingBox.y1 - hoveringOverAnnotation.boundingBox.y0) * scale}
+              x={hoveringOverAnnotation.boundingBox.x0}
+              y={hoveringOverAnnotation.boundingBox.y0}
+              width={hoveringOverAnnotation.boundingBox.x1 - hoveringOverAnnotation.boundingBox.x0}
+              height={hoveringOverAnnotation.boundingBox.y1 - hoveringOverAnnotation.boundingBox.y0}
               style={{ fill: "none", stroke: "red", strokeWidth: 1 }}
             />
           )}
