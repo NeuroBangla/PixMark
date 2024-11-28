@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+// type IHexColor =
+//   | `#${string & { length: 3 }}`
+//   | `#${string & { length: 6 }}`;
+
+interface IImageInfo {
+  width: number;
+  height: number;
+  base64encoded: string;
+}
+
 type IHexColor = string;
 
 interface IAnnotation {
@@ -20,18 +30,22 @@ interface IPixMarkViewer {
 }
 
 const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation }) => {
+  const [imageInfo, setImageInfo] = useState<IImageInfo>({ width: 0, height: 0, base64encoded: '' });
 
-  const urlToBase64 = (url: string): Promise<string | ArrayBuffer | null> => {
-    return new Promise((resolve) => {
-      fetch(url).then((response) => {
-        response.blob().then((blob) => {
-          blobToBase64(blob).then((res) => {
-            resolve(res);
-          });
-        });
-      });
+  const getImageDimensions = (blob: Blob): Promise<{ width: number; height: number }> => {
+    const img = new Image();
+
+    return new Promise((resolve, reject) => {
+      img.onload = () => {
+        resolve({ width: img.width, height: img.height });
+      };
+      img.onerror = () => {
+        reject(new Error("Failed to load image from blob."));
+      };
+
+      img.src = URL.createObjectURL(blob);
     });
-  };
+  }
 
   const blobToBase64 = (blob: Blob): Promise<string | ArrayBuffer | null> => {
     return new Promise((resolve, reject) => {
@@ -43,32 +57,46 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
   };
 
 
+  const getImageDimensionsAndBase64 = (url: string): Promise<{ width: number; height: number; base64: string }> => {
+    return new Promise((resolve, reject) => {
+      fetch(url).then((response) => {
+        response.blob().then((blob) => {
+          const imageDimensionPromise = getImageDimensions(blob);
+          const base64Promise = blobToBase64(blob);
+          Promise.allSettled([imageDimensionPromise, base64Promise]).then((results) => {
+            console.log(results);
+            const dimensions = results[0].status === 'fulfilled' ? results[0].value : { width: 0, height: 0 };
+            const base64 = results[1].status === 'fulfilled' ? results[1].value : '';
+            if (results[0].status === 'rejected' || results[1].status === 'rejected') {
+              reject('Failed to get image dimensions or base64');
+            }
+            resolve({ width: dimensions.width, height: dimensions.height, base64: base64 as string });
+          });
+        });
+      });
+    });
+  }
+
+
   if (!src) return <div>Image Preview</div>;
 
-  const [imageBase64, setImageBase64] = useState<string>('');
-
   useEffect(() => {
-    urlToBase64(src).then((res) => {
-      setImageBase64(res as string);
+    getImageDimensionsAndBase64(src).then((res) => {
+      setImageInfo({ width: res.width, height: res.height, base64encoded: res.base64 });
     });
   }, [src]);
 
-  const parentRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // print the parent div size
-    if (parentRef.current) {
-      console.log(parentRef.current.offsetWidth, parentRef.current.offsetHeight);
-    }else{
-      console.log('parentRef is null');
-    }
-  }, [parentRef]);
-
+  const { width: imgWidth, height: imgHeight, base64encoded: imageBase64 } = imageInfo;
 
   return (
-    <div ref={parentRef} style={{ position: "absolute", width: "100%", height: "100%" }}>
-      <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width="100%" height="100%">
-        <image href={imageBase64} x="0" y="0" width="900" height="900" />
+    <div
+      style={{
+        position: "absolute",
+        width: "100%", height: "100%"
+      }}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width={imgWidth} height={imgHeight}>
+        <image href={imageBase64} x="0" y="0" width={imgWidth} height={imgHeight} style={{ border: 'red 1px dotted' }} />
         {selectedResults.map((box, i) => (
           <rect
             key={i}
