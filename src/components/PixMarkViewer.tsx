@@ -53,34 +53,42 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
     });
   }, [src]);
 
+  const parentRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // print the parent div size
+    if (parentRef.current) {
+      console.log(parentRef.current.offsetWidth, parentRef.current.offsetHeight);
+    }else{
+      console.log('parentRef is null');
+    }
+  }, [parentRef]);
+
 
   return (
-    <div style={{ position: "relative", height: "100vh" }}>
-      
-      <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-        <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width="100%" height="100%">
-          <image href={imageBase64} x="0" y="0" width="900" height="900" />
-          {selectedResults.map((box, i) => (
-            <rect
-              key={i}
-              x={box.boundingBox.x0}
-              y={box.boundingBox.y0}
-              width={box.boundingBox.x1 - box.boundingBox.x0}
-              height={box.boundingBox.y1 - box.boundingBox.y0}
-              style={{ fill: "none", stroke: box.color || "lime", strokeWidth: 1 }}
-            />
-          ))}
-          {hoveringOverAnnotation && (
-            <rect
-              x={hoveringOverAnnotation.boundingBox.x0}
-              y={hoveringOverAnnotation.boundingBox.y0}
-              width={hoveringOverAnnotation.boundingBox.x1 - hoveringOverAnnotation.boundingBox.x0}
-              height={hoveringOverAnnotation.boundingBox.y1 - hoveringOverAnnotation.boundingBox.y0}
-              style={{ fill: "none", stroke: "red", strokeWidth: 1 }}
-            />
-          )}
-        </svg>
-      </div>
+    <div ref={parentRef} style={{ position: "absolute", width: "100%", height: "100%" }}>
+      <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width="100%" height="100%">
+        <image href={imageBase64} x="0" y="0" width="900" height="900" />
+        {selectedResults.map((box, i) => (
+          <rect
+            key={i}
+            x={box.boundingBox.x0}
+            y={box.boundingBox.y0}
+            width={box.boundingBox.x1 - box.boundingBox.x0}
+            height={box.boundingBox.y1 - box.boundingBox.y0}
+            style={{ fill: "none", stroke: box.color || "lime", strokeWidth: 1 }}
+          />
+        ))}
+        {hoveringOverAnnotation && (
+          <rect
+            x={hoveringOverAnnotation.boundingBox.x0}
+            y={hoveringOverAnnotation.boundingBox.y0}
+            width={hoveringOverAnnotation.boundingBox.x1 - hoveringOverAnnotation.boundingBox.x0}
+            height={hoveringOverAnnotation.boundingBox.y1 - hoveringOverAnnotation.boundingBox.y0}
+            style={{ fill: "none", stroke: "red", strokeWidth: 1 }}
+          />
+        )}
+      </svg>
     </div>
   );
 };
