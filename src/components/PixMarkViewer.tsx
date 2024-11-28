@@ -24,7 +24,7 @@ interface IAnnotation {
 }
 
 interface IPixMarkViewer {
-  src: string | undefined;
+  src: string;
   selectedResults: IAnnotation[];
   hoveringOverAnnotation?: IAnnotation;
 }
@@ -77,9 +77,6 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
     });
   }
 
-
-  if (!src) return <div>Image Preview</div>;
-
   useEffect(() => {
     getImageDimensionsAndBase64(src).then((res) => {
       setImageInfo({ width: res.width, height: res.height, base64encoded: res.base64 });
@@ -121,4 +118,5 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
   );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default PixMarkViewer;
