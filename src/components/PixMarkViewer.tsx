@@ -23,13 +23,19 @@ interface IAnnotation {
   color?: IHexColor;
 }
 
+interface IDimension {
+  width: number;
+  height: number;
+}
+
 interface IPixMarkViewer {
   src: string;
   selectedResults: IAnnotation[];
   hoveringOverAnnotation?: IAnnotation;
+  dimensions?: IDimension;
 }
 
-const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation }) => {
+const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation, dimensions }) => {
   const [imageInfo, setImageInfo] = useState<IImageInfo>({ width: 0, height: 0, base64encoded: '' });
 
   const getImageDimensions = (blob: Blob): Promise<{ width: number; height: number }> => {
@@ -85,11 +91,23 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
 
   const { width: imgWidth, height: imgHeight, base64encoded: imageBase64 } = imageInfo;
 
+  const calculateDimensionsAndScrollStyle = (dimensions?: IDimension) => {
+    if (!dimensions) {
+      return {};
+    } else {
+      return {
+        width: dimensions.width,
+        height: dimensions.height,
+        overflow: "auto",
+      };
+    }
+  };
+
   return (
     <div
       style={{
         position: "absolute",
-        width: "100%", height: "100%"
+        ...calculateDimensionsAndScrollStyle(dimensions),
       }}
     >
       <svg xmlns="http://www.w3.org/2000/svg" className="image-large" width={imgWidth} height={imgHeight}>
