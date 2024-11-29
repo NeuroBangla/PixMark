@@ -33,4 +33,12 @@ interface IPixMarkViewer {
     dimensions?: IDimension;
 }
 
-export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation };
+interface IIAnnotationWithId extends IAnnotation {
+    id: string;
+}
+
+interface IPixMarkList {
+    annotations: IIAnnotationWithId[];
+}
+
+export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IIAnnotationWithId, IPixMarkList };
