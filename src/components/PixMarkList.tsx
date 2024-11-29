@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 import List from 'rc-virtual-list';
-import { IAnnotation, IPixMarkList } from './types';
+import { IPixMarkListEntry, IPixMarkList } from './types';
 
-const ForwardMyItem = forwardRef<any, IAnnotation>(({ text, boundingBox }, ref) => {
+const AnnotationEntry = forwardRef<any, IPixMarkListEntry>((props, ref) => {
+    const { text, boundingBox, onHover } = props;
     const { x0, y0, x1, y1 } = boundingBox;
     return (
         <span
@@ -14,13 +15,15 @@ const ForwardMyItem = forwardRef<any, IAnnotation>(({ text, boundingBox }, ref) 
                 boxSizing: 'border-box',
                 display: 'inline-block',
             }}
+            onMouseEnter={() => onHover(props)}
+            onMouseLeave={() => onHover(undefined)}
         >
             {text} - {x0},{y0} - {x1},{y1}
         </span>
     );
 });
 
-const PixMarkList = ({ annotations, height }: IPixMarkList) => (
+const PixMarkList = ({ annotations, height, onHover }: IPixMarkList) => (
     <List
         data={annotations}
         itemHeight={30}
@@ -32,7 +35,7 @@ const PixMarkList = ({ annotations, height }: IPixMarkList) => (
             width: 200,
         }}
     >
-        {({ id, text, boundingBox }) => <ForwardMyItem id={id} text={text} boundingBox={boundingBox} />}
+        {({ id, text, boundingBox }) => <AnnotationEntry id={id} text={text} boundingBox={boundingBox} onHover={onHover} />}
     </List>
 );
 

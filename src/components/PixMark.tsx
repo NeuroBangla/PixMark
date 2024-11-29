@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PixMarkViewer from './PixMarkViewer';
 import PixMarkList from './PixMarkList';
-
+import { IAnnotation } from './types';
 
 const PixMark = () => {
     const annotations = [
@@ -12,15 +12,23 @@ const PixMark = () => {
     const onHeightChange = (height: number) => {
         setHeight(height);
     }
+    const [hoveringOverAnnotation, setHoveringOverAnnotation] = useState<IAnnotation | undefined>(undefined);
+    const onHover = (annotation?: IAnnotation) => {
+        setHoveringOverAnnotation(annotation);
+    }
     return (
         <div style={{ display: "flex" }}>
             <PixMarkViewer
                 src="http://localhost:3000/a.png"
                 selectedResults={annotations}
-                hoveringOverAnnotation={undefined}
+                hoveringOverAnnotation={hoveringOverAnnotation}
                 onHeightChange={onHeightChange}
             />
-            <PixMarkList annotations={annotations} height={height} />
+            <PixMarkList
+                annotations={annotations}
+                height={height}
+                onHover={onHover}
+            />
         </div>
     );
 };
