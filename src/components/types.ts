@@ -38,11 +38,14 @@ interface IPixMarkViewer {
 interface IPixMarkList {
     annotations: IAnnotation[];
     height: number;
-    onHover: (annotation: IAnnotation) => void;
+    onHover: (annotation?: IAnnotation) => void;
+    onSelectedAnnotationsChange: (annotations: IAnnotation[]) => void;
 }
 
 interface IPixMarkListEntry extends IAnnotation {
     onHover: (annotation?: IAnnotation) => void;
+    onMark: (annotation: IAnnotation) => void;
+    onUnMark: (annotation: IAnnotation) => void;
 }
 
 export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IPixMarkList, IPixMarkListEntry };

@@ -1,10 +1,19 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import List from 'rc-virtual-list';
-import { IPixMarkListEntry, IPixMarkList } from './types';
+import { IPixMarkListEntry, IPixMarkList, IAnnotation } from './types';
 
 const AnnotationEntry = forwardRef<any, IPixMarkListEntry>((props, ref) => {
-    const { text, boundingBox, onHover } = props;
+    const { text, boundingBox, onHover, onMark, onUnMark } = props;
     const { x0, y0, x1, y1 } = boundingBox;
+    const [clicked, setClicked] = useState(false);
+    const onClick = () => {
+        if (clicked) {
+            onUnMark(props);
+        } else {
+            onMark(props);
+        }
+        setClicked(!clicked);
+    }
     return (
         <span
             ref={ref}
@@ -17,26 +26,48 @@ const AnnotationEntry = forwardRef<any, IPixMarkListEntry>((props, ref) => {
             }}
             onMouseEnter={() => onHover(props)}
             onMouseLeave={() => onHover(undefined)}
+            onClick={onClick}
         >
             {text} - {x0},{y0} - {x1},{y1}
         </span>
     );
 });
 
-const PixMarkList = ({ annotations, height, onHover }: IPixMarkList) => (
-    <List
-        data={annotations}
-        itemHeight={30}
-        height={height}
-        itemKey="id"
-        style={{
-            border: '1px solid red',
-            boxSizing: 'border-box',
-            width: 200,
-        }}
-    >
-        {({ id, text, boundingBox }) => <AnnotationEntry id={id} text={text} boundingBox={boundingBox} onHover={onHover} />}
-    </List>
-);
+const PixMarkList = ({ annotations, height, onHover, onSelectedAnnotationsChange }: IPixMarkList) => {
+    const [selectedAnnotations, setSelectedAnnotations] = useState<IAnnotation[]>([]);
+    const onMark = (annotation: IAnnotation) => {
+        setSelectedAnnotations([...selectedAnnotations, annotation]);
+    }
+    const onUnMark = (annotation: IAnnotation) => {
+        setSelectedAnnotations(selectedAnnotations.filter((a) => a.id !== annotation.id));
+    }
+
+    useEffect(() => {
+        onSelectedAnnotationsChange(selectedAnnotations);
+    }, [selectedAnnotations]);
+
+    return (
+        <List
+            data={annotations}
+            itemHeight={30}
+            height={height}
+            itemKey="id"
+            style={{
+                border: '1px solid red',
+                boxSizing: 'border-box',
+                width: 200,
+            }}
+        >
+            {({ id, text, boundingBox }) => <AnnotationEntry
+                id={id}
+                text={text}
+                boundingBox={boundingBox}
+                onHover={onHover}
+                onMark={onMark}
+                onUnMark={onUnMark}
+            />}
+        </List>
+    );
+};
 
 export default PixMarkList;

@@ -36,7 +36,6 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
           const imageDimensionPromise = getImageDimensions(blob);
           const base64Promise = blobToBase64(blob);
           Promise.allSettled([imageDimensionPromise, base64Promise]).then((results) => {
-            console.log(results);
             const dimensions = results[0].status === 'fulfilled' ? results[0].value : { width: 0, height: 0 };
             const base64 = results[1].status === 'fulfilled' ? results[1].value : '';
             if (results[0].status === 'rejected' || results[1].status === 'rejected') {
