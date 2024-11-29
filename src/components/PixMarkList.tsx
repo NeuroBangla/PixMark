@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
 import List from 'rc-virtual-list';
-import { IIAnnotationWithId, IPixMarkList } from './types';
+import { IAnnotation, IPixMarkList } from './types';
 
-const ForwardMyItem = forwardRef<any, IIAnnotationWithId>(({ text, boundingBox }, ref) => {
+const ForwardMyItem = forwardRef<any, IAnnotation>(({ text, boundingBox }, ref) => {
     const { x0, y0, x1, y1 } = boundingBox;
     return (
         <span

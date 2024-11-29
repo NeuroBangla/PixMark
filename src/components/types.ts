@@ -11,6 +11,7 @@ interface IImageInfo {
 type IHexColor = string;
 
 interface IAnnotation {
+    id: string;
     text: string;
     boundingBox: {
         x0: number; // top left
@@ -34,13 +35,9 @@ interface IPixMarkViewer {
     onHeightChange: (height: number) => void;
 }
 
-interface IIAnnotationWithId extends IAnnotation {
-    id: string;
-}
-
 interface IPixMarkList {
-    annotations: IIAnnotationWithId[];
+    annotations: IAnnotation[];
     height: number;
 }
 
-export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IIAnnotationWithId, IPixMarkList };
+export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IPixMarkList };
