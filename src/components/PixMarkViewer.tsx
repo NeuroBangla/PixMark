@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IDimension, IPixMarkViewer, IImageInfo } from "./types";
 
-const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation, dimensions }) => {
+const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation, dimensions, onHeightChange }) => {
   const [imageInfo, setImageInfo] = useState<IImageInfo>({ width: 0, height: 0, base64encoded: '' });
 
   const getImageDimensions = (blob: Blob): Promise<{ width: number; height: number }> => {
@@ -42,7 +42,13 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
             if (results[0].status === 'rejected' || results[1].status === 'rejected') {
               reject('Failed to get image dimensions or base64');
             }
-            resolve({ width: dimensions.width, height: dimensions.height, base64: base64 as string });
+            const { width, height } = dimensions;
+            onHeightChange(height);
+            resolve({ 
+              width, 
+              height, 
+              base64: base64 as string 
+            });
           });
         });
       });

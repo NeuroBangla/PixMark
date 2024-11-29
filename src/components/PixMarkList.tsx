@@ -20,11 +20,11 @@ const ForwardMyItem = forwardRef<any, IIAnnotationWithId>(({ text, boundingBox }
     );
 });
 
-const PixMarkList = ({ annotations }: IPixMarkList) => (
+const PixMarkList = ({ annotations, height }: IPixMarkList) => (
     <List
         data={annotations}
         itemHeight={30}
-        height={600}
+        height={height}
         itemKey="id"
         style={{
             border: '1px solid red',

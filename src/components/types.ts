@@ -31,6 +31,7 @@ interface IPixMarkViewer {
     selectedResults: IAnnotation[];
     hoveringOverAnnotation?: IAnnotation;
     dimensions?: IDimension;
+    onHeightChange: (height: number) => void;
 }
 
 interface IIAnnotationWithId extends IAnnotation {
@@ -39,6 +40,7 @@ interface IIAnnotationWithId extends IAnnotation {
 
 interface IPixMarkList {
     annotations: IIAnnotationWithId[];
+    height: number;
 }
 
 export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IIAnnotationWithId, IPixMarkList };
