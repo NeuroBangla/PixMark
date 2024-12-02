@@ -41,4 +41,4 @@ const PixMark = ({ src, annotations }: IPixMark) => {
     );
 };
 
-export default PixMark;
+export { PixMark };
