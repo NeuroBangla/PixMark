@@ -52,4 +52,8 @@ interface IPixMarkListEntry extends IAnnotation {
     onHoveringOverAnnotation?: IAnnotation;
 }
 
-export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IPixMarkList, IPixMarkListEntry };
+interface IPixMark{
+    annotations: IAnnotation[];
+}
+
+export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IPixMarkList, IPixMarkListEntry, IPixMark };
