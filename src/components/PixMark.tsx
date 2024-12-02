@@ -3,7 +3,7 @@ import PixMarkViewer from './PixMarkViewer';
 import PixMarkList from './PixMarkList';
 import { IAnnotation, IPixMark } from './types';
 
-const PixMark = ({ annotations }: IPixMark) => {
+const PixMark = ({ src, annotations }: IPixMark) => {
     const [height, setHeight] = useState(0);
     const onHeightChange = (height: number) => {
         setHeight(height);
@@ -23,7 +23,7 @@ const PixMark = ({ annotations }: IPixMark) => {
     return (
         <div style={{ display: "flex" }}>
             <PixMarkViewer
-                src="http://localhost:3000/a.png"
+                src={src}
                 selectedResults={selectedAnnotations}
                 hoveringOverAnnotation={hoveringOverAnnotation}
                 onHeightChange={onHeightChange}
