@@ -20,6 +20,10 @@ const PixMark = () => {
     const onSelectedAnnotationsChange = (annotations: IAnnotation[]) => {
         setSelectedAnnotations(annotations);
     }
+    const [onHoveringOverAnnotation, setOnHoveringOverAnnotation] = useState<IAnnotation | undefined>(undefined);
+    const onHoveringOverAnnotationFunction = (annotation?: IAnnotation) => {
+        setOnHoveringOverAnnotation(annotation);
+    }
     return (
         <div style={{ display: "flex" }}>
             <PixMarkViewer
@@ -27,12 +31,15 @@ const PixMark = () => {
                 selectedResults={selectedAnnotations}
                 hoveringOverAnnotation={hoveringOverAnnotation}
                 onHeightChange={onHeightChange}
+                allAnnotations={annotations}
+                onHoveringOverAnnotation={onHoveringOverAnnotationFunction}
             />
             <PixMarkList
                 annotations={annotations}
                 height={height}
                 onHover={onHover}
                 onSelectedAnnotationsChange={onSelectedAnnotationsChange}
+                onHoveringOverAnnotation={onHoveringOverAnnotation}
             />
         </div>
     );

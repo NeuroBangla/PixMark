@@ -33,6 +33,8 @@ interface IPixMarkViewer {
     hoveringOverAnnotation?: IAnnotation;
     dimensions?: IDimension;
     onHeightChange: (height: number) => void;
+    allAnnotations: IAnnotation[];
+    onHoveringOverAnnotation: (annotation?: IAnnotation) => void;
 }
 
 interface IPixMarkList {
@@ -40,12 +42,14 @@ interface IPixMarkList {
     height: number;
     onHover: (annotation?: IAnnotation) => void;
     onSelectedAnnotationsChange: (annotations: IAnnotation[]) => void;
+    onHoveringOverAnnotation?: IAnnotation;
 }
 
 interface IPixMarkListEntry extends IAnnotation {
     onHover: (annotation?: IAnnotation) => void;
     onMark: (annotation: IAnnotation) => void;
     onUnMark: (annotation: IAnnotation) => void;
+    onHoveringOverAnnotation?: IAnnotation;
 }
 
 export type { IImageInfo, IDimension, IPixMarkViewer, IAnnotation, IPixMarkList, IPixMarkListEntry };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IDimension, IPixMarkViewer, IImageInfo } from "./types";
 
-const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation, dimensions, onHeightChange }) => {
+const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoveringOverAnnotation, dimensions, onHeightChange, allAnnotations, onHoveringOverAnnotation }) => {
   const [imageInfo, setImageInfo] = useState<IImageInfo>({ width: 0, height: 0, base64encoded: '' });
 
   const getImageDimensions = (blob: Blob): Promise<{ width: number; height: number }> => {
@@ -43,10 +43,10 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
             }
             const { width, height } = dimensions;
             onHeightChange(height);
-            resolve({ 
-              width, 
-              height, 
-              base64: base64 as string 
+            resolve({
+              width,
+              height,
+              base64: base64 as string
             });
           });
         });
@@ -101,6 +101,18 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
             style={{ fill: "none", stroke: "red", strokeWidth: 1 }}
           />
         )}
+        {allAnnotations.map((box, i) => (
+          <rect
+            onMouseEnter={() => { onHoveringOverAnnotation(box) }}
+            onMouseLeave={() => { onHoveringOverAnnotation(undefined) }}
+            key={i}
+            x={box.boundingBox.x0}
+            y={box.boundingBox.y0}
+            width={box.boundingBox.x1 - box.boundingBox.x0}
+            height={box.boundingBox.y1 - box.boundingBox.y0}
+            style={{ fill: "solid" , opacity: 0 }}
+          />
+        ))}
       </svg>
     </div>
   );
