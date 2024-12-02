@@ -1,6 +1,6 @@
 {
   "name": "pixmark",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An annotation marking tool with React and TypeScript",
   "main": "index.js",
   "scripts": {
