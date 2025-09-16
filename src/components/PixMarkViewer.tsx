@@ -118,5 +118,4 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({ src, selectedResults, hoverin
   );
 };
 
-// eslint-disable-next-line import/no-default-export
-export default PixMarkViewer;
+export { PixMarkViewer };

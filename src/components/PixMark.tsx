@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PixMarkViewer from './PixMarkViewer';
+import { PixMarkViewer } from './PixMarkViewer';
 import PixMarkList from './PixMarkList';
 import { IAnnotation, IPixMark } from './types';
 
