@@ -4,7 +4,7 @@ import { IPixMarkListEntry, IPixMarkList, IAnnotation } from './types'
 
 const AnnotationEntry = forwardRef<any, IPixMarkListEntry>((props, ref) => {
   const { text, boundingBox, onHover, onMark, onUnMark, onHoveringOverAnnotation } = props
-  const { x0, y0, x1, y1 } = boundingBox
+  const { x_top_left: x0, y_top_left: y0, x_bottom_right: x1, y_bottom_right: y1 } = boundingBox
   const [clicked, setClicked] = useState(false)
   const onClick = () => {
     if (clicked) {

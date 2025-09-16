@@ -115,10 +115,10 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
         {selectedResults.map((box, i) => (
           <rect
             key={i}
-            x={box.boundingBox.x0}
-            y={box.boundingBox.y0}
-            width={box.boundingBox.x1 - box.boundingBox.x0}
-            height={box.boundingBox.y1 - box.boundingBox.y0}
+            x={box.boundingBox.x_top_left}
+            y={box.boundingBox.y_top_left}
+            width={box.boundingBox.x_bottom_right - box.boundingBox.x_top_left}
+            height={box.boundingBox.y_bottom_right - box.boundingBox.y_top_left}
             style={{
               fill: 'none',
               stroke: box.color || 'lime',
@@ -128,10 +128,10 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
         ))}
         {hoveringOverAnnotation && (
           <rect
-            x={hoveringOverAnnotation.boundingBox.x0}
-            y={hoveringOverAnnotation.boundingBox.y0}
-            width={hoveringOverAnnotation.boundingBox.x1 - hoveringOverAnnotation.boundingBox.x0}
-            height={hoveringOverAnnotation.boundingBox.y1 - hoveringOverAnnotation.boundingBox.y0}
+            x={hoveringOverAnnotation.boundingBox.x_top_left}
+            y={hoveringOverAnnotation.boundingBox.y_top_left}
+            width={hoveringOverAnnotation.boundingBox.x_bottom_right - hoveringOverAnnotation.boundingBox.x_top_left}
+            height={hoveringOverAnnotation.boundingBox.y_bottom_right - hoveringOverAnnotation.boundingBox.y_top_left}
             style={{ fill: 'none', stroke: 'red', strokeWidth: 1 }}
           />
         )}
@@ -144,10 +144,10 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
               onHoveringOverAnnotation(undefined)
             }}
             key={i}
-            x={box.boundingBox.x0}
-            y={box.boundingBox.y0}
-            width={box.boundingBox.x1 - box.boundingBox.x0}
-            height={box.boundingBox.y1 - box.boundingBox.y0}
+            x={box.boundingBox.x_top_left}
+            y={box.boundingBox.y_top_left}
+            width={box.boundingBox.x_bottom_right - box.boundingBox.x_top_left}
+            height={box.boundingBox.y_bottom_right - box.boundingBox.y_top_left}
             style={{ fill: 'solid', opacity: 0 }}
           />
         ))}
