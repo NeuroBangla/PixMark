@@ -7,7 +7,7 @@ import prettierConfig from 'eslint-config-prettier';
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -33,7 +33,7 @@ export default [
     },
     rules: {
       ...react.configs.recommended.rules,
-      ...typescript.configs.recommended.rules,
+      ...(typescript.configs?.recommended?.rules ?? {}),
       ...prettierConfig.rules,
       'react/display-name': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
