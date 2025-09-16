@@ -20,6 +20,7 @@ interface IAnnotation {
     y1: number
   }
   color?: IHexColor
+  confidence?: number
 }
 
 interface IDimension {
