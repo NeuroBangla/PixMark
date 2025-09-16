@@ -65,6 +65,7 @@ interface IPixMarkListEntry extends IAnnotation {
 interface IPixMark {
   src: string
   annotations: IAnnotation[]
+  enableConfidenceFilter?: boolean
 }
 
 export type {
