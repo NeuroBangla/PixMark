@@ -10,15 +10,24 @@ interface IImageInfo {
 
 type IHexColor = string
 
+interface IBoundingBoxTwoPoints {
+    x_top_left: number
+    y_top_left: number
+    x_bottom_right: number
+    y_bottom_right: number
+}
+
+interface IBoundingBoxFourPoints extends IBoundingBoxTwoPoints {
+    x_top_right: number
+    y_top_right: number
+    x_bottom_left: number
+    y_bottom_left: number
+}
+
 interface IAnnotation {
   id: string
   text: string
-  boundingBox: {
-    x0: number // top left
-    y0: number
-    x1: number // bottom right
-    y1: number
-  }
+  boundingBox: IBoundingBoxTwoPoints | IBoundingBoxFourPoints
   color?: IHexColor
   confidence?: number
 }
