@@ -3,7 +3,7 @@ import { PixMarkViewer } from './PixMarkViewer'
 import PixMarkList from './PixMarkList'
 import { IAnnotation, IPixMark } from './types'
 
-const PixMark = ({ src, annotations }: IPixMark) => {
+const PixMark = ({ src, annotations, enableConfidenceFilter = true }: IPixMark) => {
   const [height, setHeight] = useState(0)
   const onHeightChange = (height: number) => {
     setHeight(height)
@@ -25,24 +25,32 @@ const PixMark = ({ src, annotations }: IPixMark) => {
     setOnHoveringOverAnnotation(annotation)
   }
   const [confidenceThreshold, setConfidenceThreshold] = useState(0)
-  const filteredAnnotations = annotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
-  const filteredSelected = selectedAnnotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+  const filteredAnnotations = enableConfidenceFilter
+    ? annotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+    : annotations
+  const filteredSelected = enableConfidenceFilter
+    ? selectedAnnotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+    : selectedAnnotations
   useEffect(() => {
-    setSelectedAnnotations(prev => prev.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold))
-  }, [confidenceThreshold])
+    if (enableConfidenceFilter) {
+      setSelectedAnnotations(prev => prev.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold))
+    }
+  }, [confidenceThreshold, enableConfidenceFilter])
   return (
     <div>
-      <div style={{ marginBottom: '10px' }}>
-        <label>Confidence Threshold: {confidenceThreshold.toFixed(2)}</label>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={confidenceThreshold}
-          onChange={(e) => setConfidenceThreshold(parseFloat(e.target.value))}
-        />
-      </div>
+      {enableConfidenceFilter && (
+        <div style={{ marginBottom: '10px' }}>
+          <label>Confidence Threshold: {confidenceThreshold.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={confidenceThreshold}
+            onChange={(e) => setConfidenceThreshold(parseFloat(e.target.value))}
+          />
+        </div>
+      )}
       <div style={{ display: 'flex' }}>
         <PixMarkViewer
           src={src}
