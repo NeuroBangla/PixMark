@@ -1,33 +1,31 @@
-import React, { useState } from "react";
-import { PixMarkViewer } from "./PixMarkViewer";
-import PixMarkList from "./PixMarkList";
-import { IAnnotation, IPixMark } from "./types";
+import React, { useState } from 'react'
+import { PixMarkViewer } from './PixMarkViewer'
+import PixMarkList from './PixMarkList'
+import { IAnnotation, IPixMark } from './types'
 
 const PixMark = ({ src, annotations }: IPixMark) => {
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState(0)
   const onHeightChange = (height: number) => {
-    setHeight(height);
-  };
-  const [hoveringOverAnnotation, setHoveringOverAnnotation] = useState<
-    IAnnotation | undefined
-  >(undefined);
+    setHeight(height)
+  }
+  const [hoveringOverAnnotation, setHoveringOverAnnotation] = useState<IAnnotation | undefined>(
+    undefined
+  )
   const onHover = (annotation?: IAnnotation) => {
-    setHoveringOverAnnotation(annotation);
-  };
-  const [selectedAnnotations, setSelectedAnnotations] = useState<IAnnotation[]>(
-    [],
-  );
+    setHoveringOverAnnotation(annotation)
+  }
+  const [selectedAnnotations, setSelectedAnnotations] = useState<IAnnotation[]>([])
   const onSelectedAnnotationsChange = (annotations: IAnnotation[]) => {
-    setSelectedAnnotations(annotations);
-  };
-  const [onHoveringOverAnnotation, setOnHoveringOverAnnotation] = useState<
-    IAnnotation | undefined
-  >(undefined);
+    setSelectedAnnotations(annotations)
+  }
+  const [onHoveringOverAnnotation, setOnHoveringOverAnnotation] = useState<IAnnotation | undefined>(
+    undefined
+  )
   const onHoveringOverAnnotationFunction = (annotation?: IAnnotation) => {
-    setOnHoveringOverAnnotation(annotation);
-  };
+    setOnHoveringOverAnnotation(annotation)
+  }
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: 'flex' }}>
       <PixMarkViewer
         src={src}
         selectedResults={selectedAnnotations}
@@ -44,7 +42,7 @@ const PixMark = ({ src, annotations }: IPixMark) => {
         onHoveringOverAnnotation={onHoveringOverAnnotation}
       />
     </div>
-  );
-};
+  )
+}
 
-export { PixMark };
+export { PixMark }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { IDimension, IPixMarkViewer, IImageInfo } from "./types";
+import React, { useState, useEffect } from 'react'
+import { IDimension, IPixMarkViewer, IImageInfo } from './types'
 
 const PixMarkViewer: React.FC<IPixMarkViewer> = ({
   src,
@@ -13,98 +13,84 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
   const [imageInfo, setImageInfo] = useState<IImageInfo>({
     width: 0,
     height: 0,
-    base64encoded: "",
-  });
+    base64encoded: '',
+  })
 
-  const getImageDimensions = (
-    blob: Blob,
-  ): Promise<{ width: number; height: number }> => {
-    const img = new Image();
+  const getImageDimensions = (blob: Blob): Promise<{ width: number; height: number }> => {
+    const img = new Image()
 
     return new Promise((resolve, reject) => {
       img.onload = () => {
-        resolve({ width: img.width, height: img.height });
-      };
+        resolve({ width: img.width, height: img.height })
+      }
       img.onerror = () => {
-        reject(new Error("Failed to load image from blob."));
-      };
+        reject(new Error('Failed to load image from blob.'))
+      }
 
-      img.src = URL.createObjectURL(blob);
-    });
-  };
+      img.src = URL.createObjectURL(blob)
+    })
+  }
 
   const blobToBase64 = (blob: Blob): Promise<string | ArrayBuffer | null> => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  };
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result)
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  }
 
   const getImageDimensionsAndBase64 = (
-    url: string,
+    url: string
   ): Promise<{ width: number; height: number; base64: string }> => {
     return new Promise((resolve, reject) => {
-      fetch(url).then((response) => {
-        response.blob().then((blob) => {
-          const imageDimensionPromise = getImageDimensions(blob);
-          const base64Promise = blobToBase64(blob);
-          Promise.allSettled([imageDimensionPromise, base64Promise]).then(
-            (results) => {
-              const dimensions =
-                results[0].status === "fulfilled"
-                  ? results[0].value
-                  : { width: 0, height: 0 };
-              const base64 =
-                results[1].status === "fulfilled" ? results[1].value : "";
-              if (
-                results[0].status === "rejected" ||
-                results[1].status === "rejected"
-              ) {
-                reject("Failed to get image dimensions or base64");
-              }
-              const { width, height } = dimensions;
-              onHeightChange(height);
-              resolve({
-                width,
-                height,
-                base64: base64 as string,
-              });
-            },
-          );
-        });
-      });
-    });
-  };
+      fetch(url).then(response => {
+        response.blob().then(blob => {
+          const imageDimensionPromise = getImageDimensions(blob)
+          const base64Promise = blobToBase64(blob)
+          Promise.allSettled([imageDimensionPromise, base64Promise]).then(results => {
+            const dimensions =
+              results[0].status === 'fulfilled' ? results[0].value : { width: 0, height: 0 }
+            const base64 = results[1].status === 'fulfilled' ? results[1].value : ''
+            if (results[0].status === 'rejected' || results[1].status === 'rejected') {
+              reject('Failed to get image dimensions or base64')
+            }
+            const { width, height } = dimensions
+            onHeightChange(height)
+            resolve({
+              width,
+              height,
+              base64: base64 as string,
+            })
+          })
+        })
+      })
+    })
+  }
 
   useEffect(() => {
-    getImageDimensionsAndBase64(src).then((res) => {
+    getImageDimensionsAndBase64(src).then(res => {
       setImageInfo({
         width: res.width,
         height: res.height,
         base64encoded: res.base64,
-      });
-    });
-  }, [src]);
+      })
+    })
+  }, [src])
 
-  const {
-    width: imgWidth,
-    height: imgHeight,
-    base64encoded: imageBase64,
-  } = imageInfo;
+  const { width: imgWidth, height: imgHeight, base64encoded: imageBase64 } = imageInfo
 
   const calculateDimensionsAndScrollStyle = (dimensions?: IDimension) => {
     if (!dimensions) {
-      return {};
+      return {}
     } else {
       return {
         width: dimensions.width,
         height: dimensions.height,
-        overflow: "auto",
-      };
+        overflow: 'auto',
+      }
     }
-  };
+  }
 
   return (
     <div
@@ -124,7 +110,7 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
           y="0"
           width={imgWidth}
           height={imgHeight}
-          style={{ border: "red 1px dotted" }}
+          style={{ border: 'red 1px dotted' }}
         />
         {selectedResults.map((box, i) => (
           <rect
@@ -134,8 +120,8 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
             width={box.boundingBox.x1 - box.boundingBox.x0}
             height={box.boundingBox.y1 - box.boundingBox.y0}
             style={{
-              fill: "none",
-              stroke: box.color || "lime",
+              fill: 'none',
+              stroke: box.color || 'lime',
               strokeWidth: 1,
             }}
           />
@@ -144,36 +130,30 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
           <rect
             x={hoveringOverAnnotation.boundingBox.x0}
             y={hoveringOverAnnotation.boundingBox.y0}
-            width={
-              hoveringOverAnnotation.boundingBox.x1 -
-              hoveringOverAnnotation.boundingBox.x0
-            }
-            height={
-              hoveringOverAnnotation.boundingBox.y1 -
-              hoveringOverAnnotation.boundingBox.y0
-            }
-            style={{ fill: "none", stroke: "red", strokeWidth: 1 }}
+            width={hoveringOverAnnotation.boundingBox.x1 - hoveringOverAnnotation.boundingBox.x0}
+            height={hoveringOverAnnotation.boundingBox.y1 - hoveringOverAnnotation.boundingBox.y0}
+            style={{ fill: 'none', stroke: 'red', strokeWidth: 1 }}
           />
         )}
         {allAnnotations.map((box, i) => (
           <rect
             onMouseEnter={() => {
-              onHoveringOverAnnotation(box);
+              onHoveringOverAnnotation(box)
             }}
             onMouseLeave={() => {
-              onHoveringOverAnnotation(undefined);
+              onHoveringOverAnnotation(undefined)
             }}
             key={i}
             x={box.boundingBox.x0}
             y={box.boundingBox.y0}
             width={box.boundingBox.x1 - box.boundingBox.x0}
             height={box.boundingBox.y1 - box.boundingBox.y0}
-            style={{ fill: "solid", opacity: 0 }}
+            style={{ fill: 'solid', opacity: 0 }}
           />
         ))}
       </svg>
     </div>
-  );
-};
+  )
+}
 
-export { PixMarkViewer };
+export { PixMarkViewer }

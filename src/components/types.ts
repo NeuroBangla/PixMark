@@ -3,58 +3,58 @@
 //   | `#${string & { length: 6 }}`;
 
 interface IImageInfo {
-  width: number;
-  height: number;
-  base64encoded: string;
+  width: number
+  height: number
+  base64encoded: string
 }
 
-type IHexColor = string;
+type IHexColor = string
 
 interface IAnnotation {
-  id: string;
-  text: string;
+  id: string
+  text: string
   boundingBox: {
-    x0: number; // top left
-    y0: number;
-    x1: number; // bottom right
-    y1: number;
-  };
-  color?: IHexColor;
+    x0: number // top left
+    y0: number
+    x1: number // bottom right
+    y1: number
+  }
+  color?: IHexColor
 }
 
 interface IDimension {
-  width: number;
-  height: number;
+  width: number
+  height: number
 }
 
 interface IPixMarkViewer {
-  src: string;
-  selectedResults: IAnnotation[];
-  hoveringOverAnnotation?: IAnnotation | undefined;
-  dimensions?: IDimension | undefined;
-  onHeightChange: (height: number) => void;
-  allAnnotations: IAnnotation[];
-  onHoveringOverAnnotation: (annotation?: IAnnotation | undefined) => void;
+  src: string
+  selectedResults: IAnnotation[]
+  hoveringOverAnnotation?: IAnnotation | undefined
+  dimensions?: IDimension | undefined
+  onHeightChange: (height: number) => void
+  allAnnotations: IAnnotation[]
+  onHoveringOverAnnotation: (annotation?: IAnnotation | undefined) => void
 }
 
 interface IPixMarkList {
-  annotations: IAnnotation[];
-  height: number;
-  onHover: (annotation?: IAnnotation | undefined) => void;
-  onSelectedAnnotationsChange: (annotations: IAnnotation[]) => void;
-  onHoveringOverAnnotation?: IAnnotation | undefined;
+  annotations: IAnnotation[]
+  height: number
+  onHover: (annotation?: IAnnotation | undefined) => void
+  onSelectedAnnotationsChange: (annotations: IAnnotation[]) => void
+  onHoveringOverAnnotation?: IAnnotation | undefined
 }
 
 interface IPixMarkListEntry extends IAnnotation {
-  onHover: (annotation?: IAnnotation | undefined) => void;
-  onMark: (annotation: IAnnotation) => void;
-  onUnMark: (annotation: IAnnotation) => void;
-  onHoveringOverAnnotation?: IAnnotation | undefined;
+  onHover: (annotation?: IAnnotation | undefined) => void
+  onMark: (annotation: IAnnotation) => void
+  onUnMark: (annotation: IAnnotation) => void
+  onHoveringOverAnnotation?: IAnnotation | undefined
 }
 
 interface IPixMark {
-  src: string;
-  annotations: IAnnotation[];
+  src: string
+  annotations: IAnnotation[]
 }
 
 export type {
@@ -65,4 +65,4 @@ export type {
   IPixMarkList,
   IPixMarkListEntry,
   IPixMark,
-};
+}
