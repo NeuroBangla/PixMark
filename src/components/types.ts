@@ -30,26 +30,26 @@ interface IDimension {
 interface IPixMarkViewer {
   src: string;
   selectedResults: IAnnotation[];
-  hoveringOverAnnotation?: IAnnotation;
-  dimensions?: IDimension;
+  hoveringOverAnnotation?: IAnnotation | undefined;
+  dimensions?: IDimension | undefined;
   onHeightChange: (height: number) => void;
   allAnnotations: IAnnotation[];
-  onHoveringOverAnnotation: (annotation?: IAnnotation) => void;
+  onHoveringOverAnnotation: (annotation?: IAnnotation | undefined) => void;
 }
 
 interface IPixMarkList {
   annotations: IAnnotation[];
   height: number;
-  onHover: (annotation?: IAnnotation) => void;
+  onHover: (annotation?: IAnnotation | undefined) => void;
   onSelectedAnnotationsChange: (annotations: IAnnotation[]) => void;
-  onHoveringOverAnnotation?: IAnnotation;
+  onHoveringOverAnnotation?: IAnnotation | undefined;
 }
 
 interface IPixMarkListEntry extends IAnnotation {
-  onHover: (annotation?: IAnnotation) => void;
+  onHover: (annotation?: IAnnotation | undefined) => void;
   onMark: (annotation: IAnnotation) => void;
   onUnMark: (annotation: IAnnotation) => void;
-  onHoveringOverAnnotation?: IAnnotation;
+  onHoveringOverAnnotation?: IAnnotation | undefined;
 }
 
 interface IPixMark {
