@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PixMarkViewer } from './PixMarkViewer'
 import PixMarkList from './PixMarkList'
 import { IAnnotation, IPixMark } from './types'
@@ -24,23 +24,42 @@ const PixMark = ({ src, annotations }: IPixMark) => {
   const onHoveringOverAnnotationFunction = (annotation?: IAnnotation) => {
     setOnHoveringOverAnnotation(annotation)
   }
+  const [confidenceThreshold, setConfidenceThreshold] = useState(0)
+  const filteredAnnotations = annotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+  const filteredSelected = selectedAnnotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+  useEffect(() => {
+    setSelectedAnnotations(prev => prev.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold))
+  }, [confidenceThreshold])
   return (
-    <div style={{ display: 'flex' }}>
-      <PixMarkViewer
-        src={src}
-        selectedResults={selectedAnnotations}
-        hoveringOverAnnotation={hoveringOverAnnotation}
-        onHeightChange={onHeightChange}
-        allAnnotations={annotations}
-        onHoveringOverAnnotation={onHoveringOverAnnotationFunction}
-      />
-      <PixMarkList
-        annotations={annotations}
-        height={height}
-        onHover={onHover}
-        onSelectedAnnotationsChange={onSelectedAnnotationsChange}
-        onHoveringOverAnnotation={onHoveringOverAnnotation}
-      />
+    <div>
+      <div style={{ marginBottom: '10px' }}>
+        <label>Confidence Threshold: {confidenceThreshold.toFixed(2)}</label>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={confidenceThreshold}
+          onChange={(e) => setConfidenceThreshold(parseFloat(e.target.value))}
+        />
+      </div>
+      <div style={{ display: 'flex' }}>
+        <PixMarkViewer
+          src={src}
+          selectedResults={filteredSelected}
+          hoveringOverAnnotation={hoveringOverAnnotation}
+          onHeightChange={onHeightChange}
+          allAnnotations={filteredAnnotations}
+          onHoveringOverAnnotation={onHoveringOverAnnotationFunction}
+        />
+        <PixMarkList
+          annotations={filteredAnnotations}
+          height={height}
+          onHover={onHover}
+          onSelectedAnnotationsChange={onSelectedAnnotationsChange}
+          onHoveringOverAnnotation={onHoveringOverAnnotation}
+        />
+      </div>
     </div>
   )
 }
