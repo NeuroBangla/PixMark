@@ -130,8 +130,14 @@ const PixMarkViewer: React.FC<IPixMarkViewer> = ({
           <rect
             x={hoveringOverAnnotation.boundingBox.x_top_left}
             y={hoveringOverAnnotation.boundingBox.y_top_left}
-            width={hoveringOverAnnotation.boundingBox.x_bottom_right - hoveringOverAnnotation.boundingBox.x_top_left}
-            height={hoveringOverAnnotation.boundingBox.y_bottom_right - hoveringOverAnnotation.boundingBox.y_top_left}
+            width={
+              hoveringOverAnnotation.boundingBox.x_bottom_right -
+              hoveringOverAnnotation.boundingBox.x_top_left
+            }
+            height={
+              hoveringOverAnnotation.boundingBox.y_bottom_right -
+              hoveringOverAnnotation.boundingBox.y_top_left
+            }
             style={{ fill: 'none', stroke: 'red', strokeWidth: 1 }}
           />
         )}

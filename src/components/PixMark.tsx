@@ -29,11 +29,15 @@ const PixMark = ({ src, annotations, enableConfidenceFilter = true }: IPixMark) 
     ? annotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
     : annotations
   const filteredSelected = enableConfidenceFilter
-    ? selectedAnnotations.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+    ? selectedAnnotations.filter(
+        a => a.confidence !== undefined && a.confidence > confidenceThreshold
+      )
     : selectedAnnotations
   useEffect(() => {
     if (enableConfidenceFilter) {
-      setSelectedAnnotations(prev => prev.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold))
+      setSelectedAnnotations(prev =>
+        prev.filter(a => a.confidence !== undefined && a.confidence > confidenceThreshold)
+      )
     }
   }, [confidenceThreshold, enableConfidenceFilter])
   return (
@@ -47,7 +51,7 @@ const PixMark = ({ src, annotations, enableConfidenceFilter = true }: IPixMark) 
             max="1"
             step="0.01"
             value={confidenceThreshold}
-            onChange={(e) => setConfidenceThreshold(parseFloat(e.target.value))}
+            onChange={e => setConfidenceThreshold(parseFloat(e.target.value))}
           />
         </div>
       )}

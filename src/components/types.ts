@@ -11,17 +11,17 @@ interface IImageInfo {
 type IHexColor = string
 
 interface IBoundingBoxTwoPoints {
-    x_top_left: number
-    y_top_left: number
-    x_bottom_right: number
-    y_bottom_right: number
+  x_top_left: number
+  y_top_left: number
+  x_bottom_right: number
+  y_bottom_right: number
 }
 
 interface IBoundingBoxFourPoints extends IBoundingBoxTwoPoints {
-    x_top_right: number
-    y_top_right: number
-    x_bottom_left: number
-    y_bottom_left: number
+  x_top_right: number
+  y_top_right: number
+  x_bottom_left: number
+  y_bottom_left: number
 }
 
 interface IAnnotation {
