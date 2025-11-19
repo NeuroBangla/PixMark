@@ -8,6 +8,7 @@
   "module": "dist/index.mjs",
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "vite",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "format": "prettier --write 'src/**/*.{ts,tsx,json,css,scss}'",
@@ -38,12 +39,14 @@
     "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.44.0",
     "@typescript-eslint/parser": "^8.44.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "prettier": "^3.6.2",
     "tsup": "^8.5.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vite": "^6.0.0"
   },
   "files": [
     "dist"
